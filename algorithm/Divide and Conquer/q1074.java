@@ -1,10 +1,5 @@
 // https://www.acmicpc.net/problem/1074
 
-/*
-1차: 실제 배열을 만들어 재귀 호출로 풀이 -> 메모리 초과
-2차: 배열을 지우고 인덱스 값으로만 재귀 호출 -> 시간 초과
- */
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,19 +9,17 @@ class Main {
 
     int i = 0, r, c;
 
-    /* 3차 알고리즘 계획
+    /* 풀이 알고리즘
     1. r,c가 어느 구역에 존재하는지를 찾아야 한다.
     2. 그 구역을 찾으면, 그 이전의 크고 작은 구역에서의 연산 과정을 스킵, i 값을 강제 할당한다.
     3. 재귀 호출을 통해 r, c가 존재하는 4칸 크기 구역까지 들어간다.
     4. 4칸 크기 구역에서 r, c인 칸을 찾아 출력한다.
      */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
-private void recursive(int rs, int re, int cs, int ce) {
+    private void recursive(int rs, int re, int cs, int ce) {
+        if (!(rs <= r && r <= re && cs <= c && c <= ce)) {
+            i += (re - rs + 1) * (ce - cs + 1);
+        } else
         if (re - rs > 1 || ce - cs > 1) {
             recursive(rs, (rs + re) / 2, cs, (cs + ce) / 2);
             recursive(rs, (rs + re) / 2, ((cs + ce) / 2) + 1, ce);
