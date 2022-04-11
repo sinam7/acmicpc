@@ -1,116 +1,75 @@
 // https://www.acmicpc.net/problem/2108
+/*
+    q2108 - 통계학
+ */
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Main {
+public class Main {
 
-    private void solve() {
-        List<Integer> list = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
+
+        Solve solve = new Solve();
+        solve.run();
+
+    }
+}
+
+class Solve {
+
+    BufferedReader br;
+
+    int N;
+    int sum = 0;
+
+    public void run() throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
         HashMap<Integer, Integer> freq = new HashMap<>();
 
-        int n = sc.nextInt();
-        for (int i = 0; i < n; i++) {
-            int tmp = sc.nextInt();
-            list.add(tmp);
-
-            // 최빈값 계산을 위한 HashMap<값, 빈도수>
-            if (freq.containsKey(tmp)) {
-                freq.put(tmp, freq.get(tmp) + 1);
-            } else {
-                freq.put(tmp, 1);
-            }
+        for (int i = 0; i < N; i++) {
+            int e = Integer.parseInt(br.readLine());
+            pq.offer(e);
+            sum += e;
+            if (!freq.containsKey(e)) freq.put(e, 1);
+            else freq.put(e, freq.get(e) + 1);
         }
-        
-        // 정렬
-        Collections.sort(list);
 
-        // 산술평균
-        int sum = list.stream().mapToInt(Integer::intValue).sum();
-        System.out.printf("%.0f\n", sum / (double) list.size());
+        System.out.println(Math.round(sum / (double) pq.size()));
+        int[] sortedArray = new int[pq.size()];
 
-        // 중간값 (assert N은 홀수)
-        System.out.println(list.get(list.size() / 2));
+        int size = pq.size();
+        for (int i = 0; i < size; i++) {
+            sortedArray[i] = pq.poll();
+        }
 
-        // 최빈값
-        // 1. 빈도수 최다 구하기
+        System.out.println(sortedArray[size / 2]);
+
+        PriorityQueue<Integer> maxOccurrences = new PriorityQueue<>();
         int max = -1;
-        for (int key : freq.keySet()) {
-            if (freq.get(key) > max) {
-                max = freq.get(key);
+        for (Integer key : freq.keySet()) {
+            Integer occurrence = freq.get(key);
+            if (occurrence > max) {
+                max = occurrence;
+                maxOccurrences.clear();
+                maxOccurrences.add(key);
+            } else if (occurrence == max) {
+                maxOccurrences.add(key);
             }
         }
-        
-        // 2. 최다 빈도수를 가진 key들을 새 ArrayList에 저장
-        List<Integer> frequency = new ArrayList<>();
-        for (int key : freq.keySet()) {
-            if (freq.get(key) == max) {
-                frequency.add(key);
-            }
-        }
-        // 3. 최빈값들을 정렬
-        Collections.sort(frequency);
-        // 4. 최빈값 출력
-        System.out.println(frequency.size() == 1 ? frequency.get(0) : frequency.get(1));
 
-        // 범위
-        System.out.println(list.get(list.size() - 1) - list.get(0));
+        int mode = maxOccurrences.poll();
+        if (!maxOccurrences.isEmpty()) mode = maxOccurrences.poll();
+        System.out.println(mode);
+
+        System.out.println(sortedArray[0] - sortedArray[size - 1]);
+
     }
 
-    public static void main(String[] args) {
-        sc.init();
 
-        new Main().solve();
-    }
-
-    @SuppressWarnings("unused")
-    static class sc {
-        private static BufferedReader br;
-        private static StringTokenizer st;
-
-        static void init() {
-            br = new BufferedReader(new InputStreamReader(System.in));
-            st = new StringTokenizer("");
-        }
-
-        static String readLine() {
-            try {
-                return br.readLine();
-            } catch (IOException ignored) {
-            }
-            return null;
-        }
-
-        static String readLineReplace() {
-            try {
-                return br.readLine().replaceAll("\\s+", "");
-            } catch (IOException ignored) {
-            }
-            return null;
-        }
-
-        static String next() {
-            while (!st.hasMoreTokens()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException ignored) {
-                }
-            }
-            return st.nextToken();
-        }
-
-        static long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        static int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        static double nextDouble() {
-            return Double.parseDouble(next());
-        }
-    }
 }
