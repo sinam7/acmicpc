@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/1074
+// https://www.acmicpc.net/problem/1660
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,45 +7,22 @@ import java.util.StringTokenizer;
 
 class Main {
 
-    int i = 0, r, c;
-
-    /* 풀이 알고리즘
-    1. r,c가 어느 구역에 존재하는지를 찾아야 한다.
-    2. 그 구역을 찾으면, 그 이전의 크고 작은 구역에서의 연산 과정을 스킵, i 값을 강제 할당한다.
-    3. 재귀 호출을 통해 r, c가 존재하는 4칸 크기 구역까지 들어간다.
-    4. 4칸 크기 구역에서 r, c인 칸을 찾아 출력한다.
+    /*
+    Bottom-up 방식
+    1에서 N까지 역산했을때 최소한의 연산으로 올라가는 방식을 계산한다.
+    일반적으로 (3)번 연산을 사용한다고 가정하며,
+    현재 연산중인 수가 2나 3으로 나누어 떨어지면 그 연산을 수행한 것과 (3)번 연산 중 최솟값을 취한다.
      */
-
-    private void recursive(int rs, int re, int cs, int ce) {
-        if (!(rs <= r && r <= re && cs <= c && c <= ce)) {
-            i += (re - rs + 1) * (ce - cs + 1);
-        } else
-        if (re - rs > 1 || ce - cs > 1) {
-            recursive(rs, (rs + re) / 2, cs, (cs + ce) / 2);
-            recursive(rs, (rs + re) / 2, ((cs + ce) / 2) + 1, ce);
-            recursive(((rs + re) / 2) + 1, re, cs, (cs + ce) / 2);
-            recursive(((rs + re) / 2) + 1, re, ((cs + ce) / 2) + 1, ce);
-        } else {
-            if (!(rs == r && cs == c)) i++; else System.out.println(i);
-            if (!(rs == r && ce == c)) i++; else System.out.println(i);
-            if (!(re == r && cs == c)) i++; else System.out.println(i);
-            if (!(re == r && ce == c)) i++; else System.out.println(i);
-        }
-    }
-
-
     private void solve() {
         int n = sc.nextInt();
-        int n1 = 1 << n;
 
-        r = sc.nextInt();
-        c = sc.nextInt();
-        if (r == 0 && c == 0) {
-            System.out.println(0);
-            return;
+        int[] dp = new int[1000001];
+        for (int i = 2; i <= n; i++) { // dp[1] = 0. 1은 연산이 필요없음에 주의
+            dp[i] = dp[i-1] + 1;
+            if (i % 2 == 0) dp[i] = Math.min(dp[i / 2] + 1, dp[i]);
+            if (i % 3 == 0) dp[i] = Math.min(dp[i / 3] + 1, dp[i]);
         }
-
-        recursive(0, n1 - 1, 0, n1 - 1);
+        System.out.println(dp[n]);
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/7662
 /*
-    이중 우선순위 큐 (Deque)
+    q7662 - 이중 우선순위 큐 (Deque)
 
     TreeMap의 특징을 이용해 풀이.
      - 자동 정렬 (natural order)

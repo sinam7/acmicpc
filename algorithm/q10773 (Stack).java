@@ -1,5 +1,6 @@
 // https://www.acmicpc.net/problem/10773
 /*
+    q10773 - 제로
     Stack
  */
 

@@ -1,6 +1,9 @@
-/* https://www.acmicpc.net/problem/11723
-   비트마스크를 이용한 빠른 처리가 필요한 문제.
-   TLE를 피하기 위해 StringBuilder를 통해 출력값을 한번에 출력해야 함. (반복 출력은 매우 느림)
+// https://www.acmicpc.net/problem/11723
+/*
+    q11723 - 집합
+
+    비트마스크를 이용한 빠른 처리가 필요한 문제.
+    TLE를 피하기 위해 StringBuilder를 통해 출력값을 한번에 출력해야 함. (반복 출력은 매우 느림)
  */
 import java.io.*;
 import java.util.StringTokenizer;

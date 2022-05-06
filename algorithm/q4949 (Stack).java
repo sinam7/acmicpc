@@ -1,5 +1,6 @@
 // https://www.acmicpc.net/problem/4949
 /*
+    q4949 - 균형잡힌 세상
     Stack을 이용해 괄호 짝 맞추기
  */
 
